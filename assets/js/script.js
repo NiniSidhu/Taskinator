@@ -19,11 +19,27 @@ var createTaskHandler = function(event){
     
     event.preventDefault(); // This prevents the page from refreshing itself. We need this because we don't need the browser to keep on refreshing. Since our work is in JS not in html, if we dont have this added, it will delete out our newly added elements in JS
 
+    var taskNameInput = document.querySelector("input[name='task-name']").value; //in this we are searching HTML for input selector that has a name attribute set to a value of "task-name"
+    var taskTypeInput = document.querySelector("select[name='task-type']").value;
+    
+    
+
+    
     var listItemEl = document.createElement("li"); // creating a new element li in html document stored under variable listItemEl
     listItemEl.className = "task-item"; // giving it the same styling of existing list with class task-item
-    listItemEl.textContent = "This is a new task"; // putting contene in this newly created list element
-    tasksToDoEl.appendChild(listItemEl); // pushing this newly created element to tasksToDoEl that is linked to the original list. 
     
+    var taskInfoEl = document.createElement("div"); // this creates a new div in html 
+    taskInfoEl.className = "task-info"; // assigned it to a class of task-info
+
+    //Add HTML content to div
+    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskNameInput + "</h3><span class='task-type'>" + taskTypeInput + "</span>"; //InnerHTML works just like textConent except in textConent you can only put the text; and in innerHTML you can write HTML tags inside the string value we give like <h3>, etc.
+    listItemEl.appendChild(taskInfoEl);
+    tasksToDoEl.appendChild(listItemEl); //this adds entire list item to list using appendChild 
+    
+    /*listItemEl.textContent = "This is a new task"; // putting contene in this newly created list element
+    listItemEl.textContent = taskNameInput; // this pushes whatever the user enters in the taskNameInput which is stored in the value and then pushes it to the listItemEl
+    tasksToDoEl.appendChild(listItemEl); // pushing this newly created element to tasksToDoEl that is linked to the original list. 
+    */
 }
 
 //buttonEl.addEventListener("click", createTaskHandler);
