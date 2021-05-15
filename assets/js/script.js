@@ -1,4 +1,5 @@
-var buttonEl = document.querySelector("#save-task"); //query selector is basically a search button in the document html and it will look for id save-task. We assigned this to a global variable because it will enhance the performance of the webpage.
+//var buttonEl = document.querySelector("#save-task"); //query selector is basically a search button in the document html and it will look for id save-task. We assigned this to a global variable because it will enhance the performance of the webpage.
+var formEl = document.querySelector("#task-form"); // doing this so we can add an event listener to the entire form rather than just the button 
 var tasksToDoEl = document.querySelector("#tasks-to-do"); // in the variable tasksToDoEl we are telling that variable to search the html document and to find an id that is tasks-to do
 
 /*
@@ -14,11 +15,16 @@ buttonEl.addEventListener("click", function(){ // with the variable buttonEl tha
 
 
 
-var createTaskHandler = function(){
+var createTaskHandler = function(event){
+    
+    event.preventDefault(); // This prevents the page from refreshing itself. We need this because we don't need the browser to keep on refreshing. Since our work is in JS not in html, if we dont have this added, it will delete out our newly added elements in JS
+
     var listItemEl = document.createElement("li"); // creating a new element li in html document stored under variable listItemEl
     listItemEl.className = "task-item"; // giving it the same styling of existing list with class task-item
     listItemEl.textContent = "This is a new task"; // putting contene in this newly created list element
     tasksToDoEl.appendChild(listItemEl); // pushing this newly created element to tasksToDoEl that is linked to the original list. 
+    
 }
 
-buttonEl.addEventListener("click", createTaskHandler);
+//buttonEl.addEventListener("click", createTaskHandler);
+formEl.addEventListener("submit", createTaskHandler); // because we are using the entire form this time, we cannot use click as an event listner. we use submit, which basically stands for on-submit in certail documents. Submit works when a user clicks button element with a type attribute that has a value of "submit" or when a user presses Enter on thier keyboard
