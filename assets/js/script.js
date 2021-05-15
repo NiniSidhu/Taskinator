@@ -53,11 +53,20 @@ var taskFormHandler = function(event){
     var taskNameInput = document.querySelector("input[name='task-name']").value; //in this we are searching HTML for input selector that has a name attribute set to a value of "task-name"
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
     
+    //This would check if the input fields are filled or are empty 
+    // it is saying that IF either one or both the variables are not true (false), then proceed. 
+    if (!taskNameInput || !taskTypeInput){ //the ! is NOT logic operator. this would check for false (opposite) value which means empty
+        alert("You need to fill out the task form!");
+        return false; 
+    }
+
     //This would package up Data as an Object 
     var taskDataObj = {
         name: taskNameInput, //Name property
         type: taskTypeInput //Type property
     };
+
+    formEl.reset(); //this simple line allows the formEL fields to reset (empty) after each time the "ADD TASK" button is pressed.  
 
     //Send the above as an argument to createTaskEl --> below
      createTaskEl(taskDataObj);
