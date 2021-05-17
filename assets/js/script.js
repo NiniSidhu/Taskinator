@@ -1,6 +1,8 @@
 //var buttonEl = document.querySelector("#save-task"); //query selector is basically a search button in the document html and it will look for id save-task. We assigned this to a global variable because it will enhance the performance of the webpage.
 var formEl = document.querySelector("#task-form"); // doing this so we can add an event listener to the entire form rather than just the button 
 var tasksToDoEl = document.querySelector("#tasks-to-do"); // in the variable tasksToDoEl we are telling that variable to search the html document and to find an id that is tasks-to do
+var taskIdCounter = 0; // Task Counter 
+
 
 /*
 buttonEl.addEventListener("click", function(){ // with the variable buttonEl that was assigned to the id of the button in html, we are telling it to listen for clicks. when a click happens, execute the function below
@@ -75,9 +77,56 @@ var taskFormHandler = function(event){
 //This function would hold the code that creates a new task HTML element
 var createTaskEl = function(taskDataObj){
 
+    //We are creating task actions in this function
+    var createTaskActions = function(taskId){
+
+        //Created a new Div in the html 
+        var actionContainerEl = document.createElement("div");
+        actionContainerEl.className = "task-actions"; //Assigned it to a class
+
+        //creating buttons that will Edit task actions 
+        var editButtonEl = document.createElement("button"); // In the Div, creating a new button
+        editButtonEl.textContent = "Edit"; // Labeling the button as Edit 
+        editButtonEl.className = "btn edit-btn"; // Gave the button a class
+        editButtonEl.setAttribute ("data-task-id", taskId); // Assigned the button to the function
+
+        actionContainerEl.appendChild(editButtonEl); //Appending the value of it back to the div
+
+
+        //Creating a Delete Button 
+        var deleteButtonEl = document.createElement("button");
+        deleteButtonEl.textContent = "Delete";
+        deleteButtonEl.className = "btn delete-btn";
+        deleteButtonEl.setAttribute ("data-task-id", taskId);
+
+        actionContainerEl.appendChild(deleteButtonEl);
+
+        // Creating a Drop-down menu 
+        var statusSelectEl = document.createElement("select");
+        var statusChoices = ["To Do", "In Progress", "Completed"];
+        for (var i =0; i <statusChoices.length; i++){
+            //Creates Option Element
+            var statusOptionEl = document.createElement("option");
+            statusOptionEl.textContent = statusChoices [i];
+            statusOptionEl.setAttribute("value", statusChoices[i]);
+
+            statusSelectEl.appendChild(statusOptionEl);
+        }
+        statusSelectEl.className = "select-status";
+        statusSelectEl.setAttribute("name", "status-change");
+        statusSelectEl.setAttribute("data-task-id", taskId);
+
+        actionContainerEl.appendChild(statusSelectEl);
+
+        return actionContainerEl;
+    };
+
     var listItemEl = document.createElement("li"); // creating a new element li in html document stored under variable listItemEl
     listItemEl.className = "task-item"; // giving it the same styling of existing list with class task-item
     
+    //Adding Task Id as a custom attribute
+    listItemEl.setAttribute("data-task-id", taskIdCounter);
+
     var taskInfoEl = document.createElement("div"); // this creates a new div in html 
     taskInfoEl.className = "task-info"; // assigned it to a class of task-info
 
@@ -90,10 +139,19 @@ var createTaskEl = function(taskDataObj){
     then in the inner html in the div, we point towards .name for the task-name and 
     .type for type. REMEMBER whatever variable we create within curly brackets is only 
     valid within the curly brackets as they are local variables, not global. */
-    
     listItemEl.appendChild(taskInfoEl);
+    var taskActionsEl = createTaskActions(taskIdCounter);
+    listItemEl.appendChild(taskActionsEl);
+    
+    
+    
     tasksToDoEl.appendChild(listItemEl); //this adds entire list item to list using appendChild 
    
+    //This increases the task counter for next unique ID
+    taskIdCounter++;
+
+    
+
 }
 
 formEl.addEventListener("submit", taskFormHandler);
